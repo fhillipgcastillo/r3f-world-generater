@@ -1,0 +1,26 @@
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+}
+
+#root {
+  display: flex;
+  min-width: 100%;
+  min-height: 100%;
+  align-items: stretch;
+}
+
+#canvas-container  {
+  flex-basis: 100%;
+}
