@@ -5,12 +5,10 @@ const Floor = () => {
   const meshRef = useRef(null);
 
   return (
-    <RigidBody position={[0, 0, 0]} colliders="cuboid">
       <mesh ref={meshRef} rotation-x={Math.PI * -0.5} receiveShadow>
-        <planeGeometry args={[100, 100]} />
+        <planeGeometry args={[30, 30]} />
         <meshStandardMaterial color={'#475e1b'} />
       </mesh>
-    </RigidBody>
   );
 };
 

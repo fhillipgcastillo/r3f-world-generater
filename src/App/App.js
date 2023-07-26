@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
-import { PerspectiveCamera } from '@react-three/drei'
-import { Physics } from "@react-three/rapier";
+import { CameraControls, PerspectiveCamera } from '@react-three/drei'
+// import { Physics } from "@react-three/rapier";
 import { useRef } from "react";
 import World from "./World";
 
@@ -15,10 +15,11 @@ const App = () => {
       resize={true}
       shadows
     >
-      <Physics debug>
+      {/* <Physics debug> */}
         <PerspectiveCamera ref={perspectiveCamera} fov={75} position={[0, 10, 10]} makeDefault={true} />
         <World />
-      </Physics>
+        <CameraControls />
+      {/* </Physics> */}
     </Canvas>
 
   )
