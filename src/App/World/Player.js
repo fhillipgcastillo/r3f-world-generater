@@ -14,18 +14,17 @@ const sideVector = new THREE.Vector3()
 function Player({ lerp = THREE.MathUtils.lerp }) {
     const ref = useRef()
     const rapier = useRapier()
-    const [, get] = useKeyboardControls()
+    const [_, get] = useKeyboardControls()
 
     useFrame((state) => {
         const { forward, backward, left, right, jump } = get();
 
-        // if (ref.current) {
         const velocity = ref.current?.linvel();
         // update camera
         const { x, y, z } = ref.current.translation();
         state.camera.position.set(x, y + 1.5, z);
 
-        // movement
+        // movementwww
         frontVector.set(0, 0, backward - forward)
         sideVector.set(left - right, 0, 0)
         direction.subVectors(frontVector, sideVector).normalize().multiplyScalar(SPEED).applyEuler(state.camera.rotation)
