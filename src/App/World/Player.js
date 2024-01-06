@@ -18,24 +18,24 @@ function Player({ lerp = THREE.MathUtils.lerp }) {
 
     useFrame((state) => {
         const { forward, backward, left, right, jump } = get();
+        if (ref) {
+            const velocity = ref.current?.linvel();
+            // update camera
+            const { x, y, z } = ref.current?.translation();
+            state.camera.position.set(x, y + 1.5, z);
 
-        const velocity = ref.current?.linvel();
-        // update camera
-        const { x, y, z } = ref.current.translation();
-        state.camera.position.set(x, y + 1.5, z);
+            // movementwww
+            frontVector.set(0, 0, backward - forward)
+            sideVector.set(left - right, 0, 0)
+            direction.subVectors(frontVector, sideVector).normalize().multiplyScalar(SPEED).applyEuler(state.camera.rotation)
+            ref.current?.setLinvel({ x: direction.x, y: velocity.y, z: direction.z })
 
-        // movementwww
-        frontVector.set(0, 0, backward - forward)
-        sideVector.set(left - right, 0, 0)
-        direction.subVectors(frontVector, sideVector).normalize().multiplyScalar(SPEED).applyEuler(state.camera.rotation)
-        ref.current?.setLinvel({ x: direction.x, y: velocity.y, z: direction.z })
-
-        // jumping
-        // const world = rapier.world.raw()
-        // const ray = world.castRay(new RAPIER.Ray(ref.current.translation(), { x: 0, y: -1, z: 0 }))
-        // const grounded = ray && ray.collider && Math.abs(ray.toi) <= 1.75
-        // if (jump && grounded) ref.current.setLinvel({ x: 0, y: 7.5, z: 0 })
-
+            // jumping
+            // const world = rapier.world.raw()
+            // const ray = world.castRay(new RAPIER.Ray(ref.current.translation(), { x: 0, y: -1, z: 0 }))
+            // const grounded = ray && ray.collider && Math.abs(ray.toi) <= 1.75
+            // if (jump && grounded) ref.current.setLinvel({ x: 0, y: 7.5, z: 0 })
+        }
     })
     return (
         <RigidBody ref={ref} colliders={false} mass={1} type="dynamic" position={[0, 1, 5]} enabledRotations={[false, false, false]}>
