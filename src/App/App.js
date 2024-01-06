@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { KeyboardControls, PointerLockControls } from '@react-three/drei'
+import { CameraControls, KeyboardControls, PointerLockControls } from '@react-three/drei'
 import { Physics } from "@react-three/rapier";
 import World from "./World";
 import { useControls } from 'leva'
@@ -10,18 +10,38 @@ const keyboardMapping = [
   { name: "left", keys: ["ArrowLeft", "a", "A"] },
   { name: "right", keys: ["ArrowRight", "d", "D"] },
   { name: "jump", keys: ["Space"] },
+  { name: "flyUp", keys: ["Shift"] },
+  { name: "flyDown", keys: ["Control"] },
 ];
 
 const App = () => {
-  const constrols = useControls('Camera', {
+  const controls = useControls('Camera', {
     fov: {
-      value: 75,
+      value: 70,
       min: 13,
       max: 100,
       step: 1,
     },
+    near: {
+      value: 1,
+      min: 0.1,
+      max: 10000,
+      step: 100,
+    },
+    far: {
+      value: 2000,
+      min: 400,
+      max: 100000,
+      step: 100,
+    },
+    zoom: {
+      value: 1,
+      min: 1,
+      max: 10,
+      step: 1,
+    }
   })
-  const playerTopPosition = [0, 2.5, 5]
+  const playerTopPosition = [0, 2.5, 35]
 
   return (
     <KeyboardControls map={keyboardMapping}>
@@ -30,12 +50,19 @@ const App = () => {
         dpr={[1, 1.5]}
         resize={true}
         shadows
-        camera={{ fov: constrols.fov, position: playerTopPosition }}
+        camera={{ 
+          fov: controls.fov,
+          position: playerTopPosition,
+          near: controls.near,
+          far: controls.far,
+        }}
       >
         <Physics debug>
-          <World />
+          <World cameraControls={controls} />
         </Physics>
-        <PointerLockControls selector="#root"/>
+        
+        <PointerLockControls />
+        {/* <CameraControls minPolarAngle={0} maxPolarAngle={Math.PI / 1.6} /> */}
       </Canvas>
     </KeyboardControls>
   )

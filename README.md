@@ -1,3 +1,11 @@
+# To do
+
+* [ ] Create basic planet component
+* [ ] Extract to reusable  planet component
+* [ ] create list of planets to use that component
+* [ ] Create the sun
+* [ ] Move camera to see everything
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
