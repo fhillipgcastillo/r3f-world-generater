@@ -1,10 +1,10 @@
 import React, { Suspense, useMemo } from 'react'
 import Floor from "./Floor";
 import Environment from "./Environment";
-import { FirstPersonControls, Html, KeyboardControls, PointerLockControls } from '@react-three/drei';
+import { Html } from '@react-three/drei';
 import Player from "./Player";
-import { Physics, RigidBody } from '@react-three/rapier';
-import { useFrame } from '@react-three/fiber';
+import { RigidBody } from '@react-three/rapier';
+// import { useFrame } from '@react-three/fiber';
 
 const distanceDevider = 1000000;
 const planetsInfo = [
@@ -81,7 +81,7 @@ const planetsInfo = [
 
 ];
 
-const sizeReductionBy = 1 / 100000.00; //10k
+const sizeReductionBy = 1 / 100000.00;
 
 const GalacticSpheredObject = ({ name, size, color = "red", position = [0, 0, 0], awayFromSun = 0 }) => {
     const thePosition = useMemo(() => {
@@ -94,33 +94,22 @@ const GalacticSpheredObject = ({ name, size, color = "red", position = [0, 0, 0]
             <mesh position={thePosition} castShadow receiveShadow>
                 <sphereGeometry args={[size * sizeReductionBy, 18, 12]} />
                 <meshStandardMaterial color={color} />
-                <Html>
+                <Html style={{zIndex: 1}}>
                     <span style={{ color: color }}>{name}</span>
                 </Html>
             </mesh>
         </group>
     )
 };
-const cameraHandler = (camera) => {
-    console.log("camera", camera);
-    // camera.near = 
-};
-const World = ({cameraControls}) => {
-    useFrame((state, delta) => {
-        // cameraHandler(state.camera)
-        
-    })
+
+const World = ({ cameraControls, paused }) => {
+    // useFrame((state, delta) => {
+    // })
     return (
         <Suspense fallback={null}>
             <group name='world'>
                 <Environment />
                 <group name="objects">
-                    {/* <RigidBody mass={5} position={[1.5, 5, -5]}>
-                        <mesh castShadow receiveShadow>
-                            <boxGeometry args={[2, 2, 2]} />
-                            <meshStandardMaterial color={'yellow'} />
-                        </mesh>
-                    </RigidBody> */}
                     <group name='galaxy'>
                         {
                             planetsInfo.map((galacticSphere) =>
@@ -132,7 +121,15 @@ const World = ({cameraControls}) => {
                             )
                         }
                     </group>
-                    <Player initialPosition={[0, 2, 35]} />
+                    <Player initialPosition={[0, 2, 35]} paused={paused} />
+                    <RigidBody mass={1} position={[(14960000 / distanceDevider / 2), 50, -5]} friction={10}>
+                        <GalacticSpheredObject
+                            name="Ball"
+                            color='white'
+                            size={12756 * 10}
+                            awayFromSun={(14960000 / distanceDevider / 2)}
+                       />
+                    </RigidBody>
                     <Floor />
                 </group>
             </group>
