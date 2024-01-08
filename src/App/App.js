@@ -95,6 +95,8 @@ const App = () => {
         </div>
       </div>
       <div style={{ zIndex: 1, width: "100vw" }}>
+        <div className="dot" />
+
         <Canvas
           args={[window.innerWidth, window.innerHeight]}
           dpr={[1, 1.5]}

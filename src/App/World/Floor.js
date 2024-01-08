@@ -11,9 +11,9 @@ const Floor = () => {
   });
 
   return (
-    <RigidBody>
+    <RigidBody debug>
       <mesh ref={meshRef} rotation-x={Math.PI * -0.5} receiveShadow >
-        <planeGeometry args={[300, 300, 256, 256]} />
+        <planeGeometry args={[30000, 30000, 256, 256]} />
         <meshStandardMaterial color={'#475e1b'} wireframe={control.wireframe} />
       </mesh>
     </RigidBody>

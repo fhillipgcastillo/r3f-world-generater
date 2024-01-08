@@ -1,9 +1,10 @@
-import React, { Suspense, useMemo } from 'react'
+import React, { Suspense, useMemo, useState } from 'react'
 import Floor from "./Floor";
 import Environment from "./Environment";
 import { Html } from '@react-three/drei';
 import Player from "./Player";
 import { RigidBody } from '@react-three/rapier';
+import GalacticSpheredObject from './GalacticSpheredObject';
 // import { useFrame } from '@react-three/fiber';
 
 const distanceDevider = 1000000;
@@ -81,30 +82,16 @@ const planetsInfo = [
 
 ];
 
-const sizeReductionBy = 1 / 100000.00;
-
-const GalacticSpheredObject = ({ name, size, color = "red", position = [0, 0, 0], awayFromSun = 0 }) => {
-    const thePosition = useMemo(() => {
-        const [x, y, z] = position;
-        return [x + awayFromSun, y, z];
-    }, [position, awayFromSun]);
-
-    return (
-        <group name={name}>
-            <mesh position={thePosition} castShadow receiveShadow>
-                <sphereGeometry args={[size * sizeReductionBy, 18, 12]} />
-                <meshStandardMaterial color={color} />
-                <Html style={{zIndex: 1}}>
-                    <span style={{ color: color }}>{name}</span>
-                </Html>
-            </mesh>
-        </group>
-    )
-};
-
 const World = ({ cameraControls, paused }) => {
     // useFrame((state, delta) => {
     // })
+    const [teleportTo, setTeleportTo] = useState({});
+    const handleClick = (pos) => {
+        setTeleportTo(pos);
+        setTimeout(function (){
+            setTeleportTo({});
+        }, 500)
+    };
     return (
         <Suspense fallback={null}>
             <group name='world'>
@@ -117,17 +104,23 @@ const World = ({ cameraControls, paused }) => {
                                     {...galacticSphere}
                                     position={[0, 3, -5]}
                                     key={galacticSphere.name}
-                                />
+                            moveTo={handleClick}
+                            />
                             )
                         }
                     </group>
-                    <Player initialPosition={[0, 2, 35]} paused={paused} />
+                    <Player 
+                        initialPosition={[0, 2, 35]}
+                        paused={paused}
+                        teleportTo={teleportTo}
+                    />
                     <RigidBody mass={1} position={[(14960000 / distanceDevider / 2), 50, -5]} friction={10}>
                         <GalacticSpheredObject
                             name="Ball"
                             color='white'
                             size={12756 * 10}
                             awayFromSun={(14960000 / distanceDevider / 2)}
+                            moveTo={handleClick}
                        />
                     </RigidBody>
                     <Floor />
