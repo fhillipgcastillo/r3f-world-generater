@@ -84,7 +84,7 @@ function Player({ paused, initialPosition = [0, 1, 5], teleportTo = {}, lerp = T
             ref={ref}
             colliders={false}
             mass={1}
-            type="dynamic"
+            type="fixed"
             position={initialPosition}
             enabledRotations={[false, false, false]}
         >

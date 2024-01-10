@@ -1,20 +1,24 @@
-import React, { Suspense, useMemo, useState } from 'react'
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import Floor from "./Floor";
 import Environment from "./Environment";
-import { Html } from '@react-three/drei';
+import { Html, PerspectiveCamera } from '@react-three/drei';
 import Player from "./Player";
 import { RigidBody } from '@react-three/rapier';
 import GalacticSpheredObject from './GalacticSpheredObject';
-// import { useFrame } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
+import { useControls } from 'leva';
 
 const distanceDevider = 1000000;
+const SUN = {
+    name: "Sun",
+    size: 1391400, //1,391,400 km
+    color: "orange",
+    awayFromSun: 1, // km
+};
+
 const planetsInfo = [
-    {
-        name: "Sun",
-        size: 1391400, //1,391,400 km
-        color: "orange",
-        awayFromSun: 1, // km
-    },
+
     {
         name: "Mercury",
         size: 4879, // diameter
@@ -38,6 +42,20 @@ const planetsInfo = [
         awayFromSun: 149600000 / distanceDevider, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
+        objects: [
+            {
+                name: "Moon",
+                size: 6000 * 10, // diameter
+                color: "white", // or hex color
+                awayFromSun:  149600000 / distanceDevider, // km this will be the offset
+                rotationSpeed: 0.00001, // maybe rotations per second
+                rotarion: {
+                    x: 0,
+                    y:  149600000 / distanceDevider,
+                    z: 0,
+                }
+            },
+        ]
     },
     {
         name: "Mars",
@@ -83,47 +101,101 @@ const planetsInfo = [
 ];
 
 const World = ({ cameraControls, paused }) => {
-    // useFrame((state, delta) => {
-    // })
     const [teleportTo, setTeleportTo] = useState({});
-    const handleClick = (pos) => {
+    const [teleportTarget, setTeleportTarget] = useState({});
+    const game = useThree();
+    const galaxiesRef = useRef();
+    const controls = useControls('Camera', {
+        // debug: false,
+        fov: {
+            value: 24,
+            min: 13,
+            max: 100,
+            step: 1,
+        },
+        near: {
+            value: 1,
+            min: 0.1,
+            max: 10000,
+            step: 100,
+        },
+        far: {
+            value: 2000,
+            min: 400,
+            max: 100000000,
+            step: 100,
+        },
+        zoom: {
+            value: 1,
+            min: 1,
+            max: 10,
+            step: 1,
+        },
+        position: [0, 0, 50],
+        rotation: [0, 0, 50],
+    })
+    const handleClick = (target, pos) => {
         setTeleportTo(pos);
-        setTimeout(function (){
+        setTeleportTarget(target);
+        setTimeout(function () {
+            setTeleportTarget(null);
             setTeleportTo({});
         }, 500)
     };
+    useEffect(() => {
+        // if (teleportTo.hasOwnProperty("x")) {
+        //     const { x, y, z } = teleportTo;
+        //     game.camera.position.set(x, y, z + ((teleportTarget.size * 1 / 100000.00) * 0.1) + (teleportTarget.size * 1 / 100000.00));
+        // }
+    }, [teleportTo]);
+    useEffect(() => {
+        // galaxiesRef.current.rotation.y = Math.PI / 8;
+    }, [galaxiesRef])
+    useFrame((state, delta) => {
+        // state.camera.updateMatrixWorld();
+        // galaxiesRef.current.rotation.y += delta;
+        // state.camera.lerp()
+        // console.log(state.camera.position);
+    })
     return (
         <Suspense fallback={null}>
             <group name='world'>
                 <Environment />
                 <group name="objects">
-                    <group name='galaxy'>
+                    <group name='galaxy' ref={galaxiesRef}>
+                        <GalacticSpheredObject
+                            {...SUN}
+                            position={[0, 3, -5]}
+                            key={SUN.name}
+                            moveTo={handleClick}
+                        />
                         {
                             planetsInfo.map((galacticSphere) =>
                                 <GalacticSpheredObject
                                     {...galacticSphere}
                                     position={[0, 3, -5]}
                                     key={galacticSphere.name}
-                            moveTo={handleClick}
-                            />
+                                    moveTo={handleClick}
+                                    objects={galacticSphere?.objects}
+                                />
                             )
                         }
                     </group>
-                    <Player 
-                        initialPosition={[0, 2, 35]}
-                        paused={paused}
-                        teleportTo={teleportTo}
+                    {/* <Player 
+                            initialPosition={[0, 2, 35]}
+                            paused={paused}
+                            teleportTo={teleportTo}
+                        /> */}
+                    <PerspectiveCamera
+                        {...controls} 
+                        // position={[0,0,50]}
+                        makeDefault
+                        onUpdate={self => {
+                            self.updateProjectionMatrix(); 
+                            console.log("updated camera", self.rotation)
+                        }}
                     />
-                    <RigidBody mass={1} position={[(14960000 / distanceDevider / 2), 50, -5]} friction={10}>
-                        <GalacticSpheredObject
-                            name="Ball"
-                            color='white'
-                            size={12756 * 10}
-                            awayFromSun={(14960000 / distanceDevider / 2)}
-                            moveTo={handleClick}
-                       />
-                    </RigidBody>
-                    <Floor />
+
                 </group>
             </group>
         </Suspense>
