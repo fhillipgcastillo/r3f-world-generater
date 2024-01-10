@@ -6,7 +6,7 @@ import { useFrame } from '@react-three/fiber';
 import { useControls } from 'leva';
 
 import GameContext from '../../contexts/gameContext';
-import WorldContext from './WorldContext';
+// import WorldContext from './WorldContext';
 
 import Floor from "../../components/Floor";
 import Environment from "../../components/Environment";
@@ -120,7 +120,7 @@ const World = () => {
     };
 
     return (
-        <WorldContext.Provider value={{ planetsInfo }}>
+        // <WorldContext.Provider value={{ planetsInfo }}>
             <Suspense fallback={null}>
                 <group name='world'>
                     <Environment />
@@ -152,7 +152,7 @@ const World = () => {
                     </group>
                 </group>
             </Suspense>
-        </WorldContext.Provider>
+        // </WorldContext.Provider>
     )
 }
 
