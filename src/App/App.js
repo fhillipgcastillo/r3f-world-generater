@@ -2,11 +2,13 @@ import { Canvas } from "@react-three/fiber";
 import { CameraControls, KeyboardControls, OrbitControls, PointerLockControls } from '@react-three/drei'
 import { Physics } from "@react-three/rapier";
 import World from "./World";
+import SmallSollarSystem from "./SmallSolarSystem";
 import { useControls } from 'leva'
 import { useEffect, useRef, useState } from "react";
 import { PerspectiveCamera } from '@react-three/drei'
 import GameContext, { defaultGameState } from "./gameContext";
 
+import {default as WasdControls} from "./SmallSolarSystem/KeyboardOrbitControl";
 
 const keyboardMapping = [
   { name: "forward", keys: ["ArrowUp", "w", "W"] },
@@ -97,19 +99,12 @@ const App = () => {
           // }}
           >
             <Physics debug={controls.debug}>
-              <World />
+              <SmallSollarSystem />
             </Physics>
 
             {/* <PointerLockControls selector="#start-btn" /> */}
-            <OrbitControls />
-            {/* <PerspectiveCamera
-            // {...controls} 
-            ref={cameraRef}
-            position={[0, 0, 50]}
-            makeDefault
-            onUpdate={self => {self.updateProjectionMatrix(); console.log("updated camera", self.position)}}
-        /> */}
-            {/* <PerspectiveCamera ref={perspectiveCamera} fov={75} position={[0, 10, 10]} makeDefault={true} /> */}
+            <OrbitControls makeDefault />
+          <WasdControls />
           </Canvas>
         </div>
       </KeyboardControls >

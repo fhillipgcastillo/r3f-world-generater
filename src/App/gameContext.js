@@ -37,9 +37,9 @@ const planetsInfo = [
                 name: "Moon",
                 size: 6000 * 10, // diameter
                 color: "white", // or hex color
-                awayFromSun:  149600000 / distanceDevider, // km this will be the offset
+                awayFromSun:  149900000 / distanceDevider, // km this will be the offset
                 rotationSpeed: 0.00001, // maybe rotations per second
-                rotarion: {
+                rotation: {
                     x: 0,
                     y:  149600000 / distanceDevider,
                     z: 0,

@@ -14,7 +14,7 @@ import GameContext from '../gameContext';
 const World = () => {
     const [teleportTo, setTeleportTo] = useState({});
     const [teleportTarget, setTeleportTarget] = useState({});
-    const {sun, planetsInfo, distanceDevider, paused} = useContext(GameContext);
+    const { sun, planetsInfo, distanceDevider, paused } = useContext(GameContext);
 
     const game = useThree();
     const galaxiesRef = useRef();
@@ -33,7 +33,7 @@ const World = () => {
             step: 100,
         },
         far: {
-            value: 2000,
+            value: 5000,
             min: 400,
             max: 100000000,
             step: 100,
@@ -44,10 +44,9 @@ const World = () => {
             max: 10,
             step: 1,
         },
-        position: [0, 0, 50],
-        rotation: [0, 0, 50],
+        position: [3000, 0, 1000],
     })
-    
+
     useEffect(() => {
         // if (teleportTo.hasOwnProperty("x")) {
         //     const { x, y, z } = teleportTo;
@@ -63,10 +62,7 @@ const World = () => {
         // state.camera.lerp()
         // console.log(state.camera.position);
     });
-    useEffect(() => {
-      console.log("sun", {sun, planetsInfo, distanceDevider, paused});
-    }, []);
-    
+
     const handleClick = (target, pos) => {
         setTeleportTo(pos);
         setTeleportTarget(target);
@@ -90,13 +86,24 @@ const World = () => {
                         />}
                         {
                             planetsInfo && planetsInfo.map((galacticSphere) =>
-                                <GalacticSpheredObject
-                                    {...galacticSphere}
-                                    position={[0, 3, -5]}
-                                    key={galacticSphere.name}
-                                    moveTo={handleClick}
-                                    objects={galacticSphere?.objects}
-                                />
+                                <group key={galacticSphere.name}>
+                                    <GalacticSpheredObject
+                                        {...galacticSphere}
+                                        position={[0, 3, -5]}
+                                        moveTo={handleClick}
+                                        objects={galacticSphere?.objects}
+                                    />
+                                    {/* {
+                                        galacticSphere?.objects?.map((localObject) => <GalacticSpheredObject
+                                            {...localObject}
+                                            position={[0, 3, -5]}
+                                            key={localObject.name}
+                                            moveTo={handleClick}
+                                            objects={localObject?.objects}
+                                        />
+                                        )
+                                    } */}
+                                </group>
                             )
                         }
                     </group>
@@ -106,12 +113,12 @@ const World = () => {
                             teleportTo={teleportTo}
                         /> */}
                     <PerspectiveCamera
-                        {...controls} 
+                        {...controls}
                         // position={[0,0,50]}
                         makeDefault
                         onUpdate={self => {
-                            self.updateProjectionMatrix(); 
-                            console.log("updated camera", self.rotation)
+                            self.updateProjectionMatrix();
+                            // console.log("updated camera", self)
                         }}
                     />
 
