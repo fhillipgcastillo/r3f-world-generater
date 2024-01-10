@@ -4,22 +4,25 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useControls } from "leva";
 import { Vector3 } from "three";
 
+
 const sizeReductionBy = 1 / 100000.00;
 
 const Planet = (props) => {
     const planet = useRef();
     const game = useThree();
-
+    const orbitcontrols = useThree(state => state.controls);
+    const rotations = props?.rotationSpeed ? {
+        rotationSpeed: props?.rotationSpeed,
+        rotation: props?.rotation,
+    } : {};
     const controls = useControls(`${props.name}`, {
         name: props.name,
         size: props.size,
         color: props.color,
         awayFromSun: props.awayFromSun,
-        rotationSpeed: props?.rotationSpeed || 0,
-        rotation: props?.rotation || { x: 0, y: 0, z: 0 },
         wireframe: true,
+        ...rotations
         // rotation: props.rotation,
-
     })
 
     const thePosition = useMemo(() => {
@@ -29,13 +32,28 @@ const Planet = (props) => {
 
 
     const handleClick = (e) => {
-        console.log("looking at " + controls.name);
-        game.camera.lookAt(planet.current.position);
-        // moveTo(e.object.position);
-        const { x, y, z } = thePosition;
-        game.camera.position.set(x, y, z /* + ((size * 1 / 100000.00) * 0.1) + (size * 1 / 100000.00) */);
+        const vec = new Vector3();
+        const { distance, object: {position} } = e;
+        const  [ x, y, z ] = position;
 
+        vec.setFromMatrixColumn(game.camera.matrix, 0)
+        vec.crossVectors(game.camera.up, vec)
+        
+        // console.log("looking at " + controls.name, );
+        
+        game.camera.position.addScaledVector(vec, distance)
+        orbitcontrols.target.addScaledVector(vec, distance);
+        
+
+        orbitcontrols.target.set(x, y, z);
+        orbitcontrols.update();
     };
+
+    useEffect(() => {
+        // if(props.name === "Earth"){
+        //     game.camera.lookAt(planet);
+        // }
+    }, [])
     useFrame((state) => {
         state.camera.updateProjectionMatrix()
     });
@@ -91,6 +109,11 @@ const GalacticSpheredObject = (props) => {
     const galacticGroup = useRef();
     const localGroup = useRef();
 
+    const thePosition = useMemo(() => {
+        const [x, y, z] = props?.proistion || [0, 0, 0];
+        return [x + props.awayFromSun, y, z];
+    }, [props.awayFromSun]);
+
     // handlers & functions
     const handleHover = (obj) => {
         setBeingHover(true);
@@ -105,11 +128,12 @@ const GalacticSpheredObject = (props) => {
 
         // each planet should have its own local objects
         // each local object have their own central rotation and parent rotation
-        // console.log("delta", delta);
-        // galacticGroup.current.rotation.y += controls.awayFromSun * delta * controls.rotationSpeed;
-        if(props.objects){
-        localGroup.current.rotation.y += delta * (props?.rotationSpeed || 1)//props.awayFromSun * delta * (props?.rotationSpeed || 1);
-        }// mesh.current.rotation.y += delta;
+        
+        // galacticGroup.current.rotation.y += delta * 0.01;
+        if (localGroup.current && props.name !== "Sun") {
+            localGroup.current.rotation.y += delta * (props?.rotationSpeed || 1)//props.awayFromSun * delta * (props?.rotationSpeed || 1);
+        }
+        // mesh.current.rotation.y += delta;
         // state.camera.lerp()
     });
 
@@ -119,19 +143,25 @@ const GalacticSpheredObject = (props) => {
             onPointerEnter={handleHover}
             onPointerOut={handleHoverOut}
             ref={galacticGroup}
+            position={[0, 0, 0]}
         >
-            <group
-                name={`props.name-locals`}
-                ref={localGroup}
-                position={[props.awayFromSun * 2, 0, 0]}
-            >
-                <Planet {...props} beingHover={beingHover} />
+            <Planet {...props} position={thePosition} beingHover={beingHover} />
+            {
+                props?.objects?.length > 0 &&
+                <group
+                    name={`props.name-locals`}
+                    ref={localGroup}
+                    position={thePosition}
+                >
 
-                {
-                    props?.objects?.length > 0 && props.objects.map(object => <Planet {...object} key={object.name} wireframe={true} />)
-                }
-                <axesHelper args={[props.size * sizeReductionBy * 2]} />
-            </group>
+                    {props.objects.map(object =>
+                        <GalacticSpheredObject {...object} key={`${props.name}-${object.name}`} wireframe={true} />
+                    )}
+
+                </group>
+            }
+            <axesHelper args={[props.size * sizeReductionBy * 2]} />
+
         </group>
     )
 };
