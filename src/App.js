@@ -4,8 +4,8 @@ import { KeyboardControls, OrbitControls } from '@react-three/drei'
 import { Physics } from "@react-three/rapier";
 import { useControls } from 'leva'
 
-// import SolarSystem from "./worlds/SolarSystem";
-import SmallSollarSystem from "./worlds/SmallSolarSystem";
+import SolarSystem from "./worlds/SolarSystem";
+// import SmallSollarSystem from "./worlds/SmallSolarSystem";
 import GameContext, { defaultGameState } from "./contexts/gameContext";
 import KeyboardOrbitControl from "./components/KeyboardOrbitControl";
 
@@ -40,7 +40,7 @@ const App = () => {
 
 
   return (
-    <GameContext.Provider value={{...defaultGameState, paused}}>
+    <GameContext.Provider value={{ ...defaultGameState, paused }}>
       <KeyboardControls map={keyboardMapping}>
         {/* add animation later */}
         {/* 
@@ -88,22 +88,15 @@ const App = () => {
             resize={true}
             shadows
             camera={cameraRef}
-          // camera={{
-          //   fov: controls.fov,
-          //   position: [-10, 1.5, 1000],
-          //   near: controls.near,
-          //   far: controls.far,
-          //   zoom: controls.zoom,
-          //   rotateOnAxis: [0, Math.PI  / 4, 0],
-          // }}
           >
             <Physics debug={controls.debug}>
-              <SmallSollarSystem />
+              {/* <SmallSollarSystem /> */}
+              <SolarSystem />
             </Physics>
 
             {/* <PointerLockControls selector="#start-btn" /> */}
             <OrbitControls makeDefault />
-          <KeyboardOrbitControl />
+            <KeyboardOrbitControl />
           </Canvas>
         </div>
       </KeyboardControls >
