@@ -35,6 +35,29 @@ const Planet = ({ name, size, moveTo = () => { }, color = "red", position = [0, 
     );
 };
 
+/*
+Props
+{
+    name: string;
+    size: float;
+    awayFromSun: float; // need to be rename to something like awayFromParent
+    color: string; // named or hex value
+    // good to have is a type like star, planet, moon, steroids, etc.
+    // need to be added Lettering color;
+    // new values
+    rotationSpeed: float fraction; // should be a low number like 0.00001;
+    rotation: {
+        x: number/float;
+        y: number/float;
+        z: number/float;
+    };
+    objects: [
+        previous props object
+    ]
+}
+
+
+*/
 const GalacticSpheredObject = (props) => {
     //states & vars
     const [beingHover, setBeingHover] = useState(false);

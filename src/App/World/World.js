@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import React, { Suspense, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import Floor from "./Floor";
 import Environment from "./Environment";
 import { Html, PerspectiveCamera } from '@react-three/drei';
@@ -8,101 +8,14 @@ import GalacticSpheredObject from './GalacticSpheredObject';
 import { useThree } from '@react-three/fiber';
 import { useFrame } from '@react-three/fiber';
 import { useControls } from 'leva';
+import GameContext from '../gameContext';
 
-const distanceDevider = 1000000;
-const SUN = {
-    name: "Sun",
-    size: 1391400, //1,391,400 km
-    color: "orange",
-    awayFromSun: 1, // km
-};
 
-const planetsInfo = [
-
-    {
-        name: "Mercury",
-        size: 4879, // diameter
-        color: "#c0bdbc", // or hex color
-        awayFromSun: 57900000 / distanceDevider, //57900000, // km
-        // rotationSpeed: 1, // maybe rotations per second
-        // rotationAngle: 0, // angle
-    },
-    {
-        name: "Venus",
-        size: 12104 * 10, // diameter
-        color: "#f4dbcc", // or hex color
-        awayFromSun: 108200000 / distanceDevider, //149600000, // km
-        // rotationSpeed: 1, // maybe rotations per second
-        // rotationAngle: 0, // angle
-    },
-    {
-        name: "Earth",
-        size: 12756 * 10, // diameter
-        color: "#426b8f", // or hex color
-        awayFromSun: 149600000 / distanceDevider, // km
-        // rotationSpeed: 1, // maybe rotations per second
-        // rotationAngle: 0, // angle
-        objects: [
-            {
-                name: "Moon",
-                size: 6000 * 10, // diameter
-                color: "white", // or hex color
-                awayFromSun:  149600000 / distanceDevider, // km this will be the offset
-                rotationSpeed: 0.00001, // maybe rotations per second
-                rotarion: {
-                    x: 0,
-                    y:  149600000 / distanceDevider,
-                    z: 0,
-                }
-            },
-        ]
-    },
-    {
-        name: "Mars",
-        size: 6792 * 10, // diameter
-        color: "#f27b5f", // or hex color
-        awayFromSun: 227900000 / distanceDevider, //149600000, // km
-        // rotationSpeed: 1, // maybe rotations per second
-        // rotationAngle: 0, // angle
-    },
-    {
-        name: "Jupiter",
-        size: 142984, // diameter
-        color: "#bfaf9b", // or hex color
-        awayFromSun: 778600000 / distanceDevider, //149600000, // km
-        // rotationSpeed: 1, // maybe rotations per second
-        // rotationAngle: 0, // angle
-    },
-    {
-        name: "Saturn",
-        size: 120536, // diameter
-        color: "#f3ce88", // or hex color
-        awayFromSun: 1433500000 / distanceDevider, //149600000, // km
-        // rotationSpeed: 1, // maybe rotations per second
-        // rotationAngle: 0, // angle
-    },
-    {
-        name: "Uranus",
-        size: 51118, // diameter
-        color: "#d0ecf0", // or hex color
-        awayFromSun: 2872500000 / distanceDevider, //149600000, // km
-        // rotationSpeed: 1, // maybe rotations per second
-        // rotationAngle: 0, // angle
-    },
-    {
-        name: "Neptune",
-        size: 49528, // diameter
-        color: "#657ba5", // or hex color
-        awayFromSun: 4495100000 / distanceDevider, //149600000, // km
-        // rotationSpeed: 1, // maybe rotations per second
-        // rotationAngle: 0, // angle
-    },
-
-];
-
-const World = ({ cameraControls, paused }) => {
+const World = () => {
     const [teleportTo, setTeleportTo] = useState({});
     const [teleportTarget, setTeleportTarget] = useState({});
+    const {sun, planetsInfo, distanceDevider, paused} = useContext(GameContext);
+
     const game = useThree();
     const galaxiesRef = useRef();
     const controls = useControls('Camera', {
@@ -134,14 +47,7 @@ const World = ({ cameraControls, paused }) => {
         position: [0, 0, 50],
         rotation: [0, 0, 50],
     })
-    const handleClick = (target, pos) => {
-        setTeleportTo(pos);
-        setTeleportTarget(target);
-        setTimeout(function () {
-            setTeleportTarget(null);
-            setTeleportTo({});
-        }, 500)
-    };
+    
     useEffect(() => {
         // if (teleportTo.hasOwnProperty("x")) {
         //     const { x, y, z } = teleportTo;
@@ -156,21 +62,34 @@ const World = ({ cameraControls, paused }) => {
         // galaxiesRef.current.rotation.y += delta;
         // state.camera.lerp()
         // console.log(state.camera.position);
-    })
+    });
+    useEffect(() => {
+      console.log("sun", {sun, planetsInfo, distanceDevider, paused});
+    }, []);
+    
+    const handleClick = (target, pos) => {
+        setTeleportTo(pos);
+        setTeleportTarget(target);
+        setTimeout(function () {
+            setTeleportTarget(null);
+            setTeleportTo({});
+        }, 500)
+    };
+
     return (
         <Suspense fallback={null}>
             <group name='world'>
                 <Environment />
                 <group name="objects">
                     <group name='galaxy' ref={galaxiesRef}>
-                        <GalacticSpheredObject
-                            {...SUN}
+                        {sun && <GalacticSpheredObject
+                            {...sun}
                             position={[0, 3, -5]}
-                            key={SUN.name}
+                            key={sun.name}
                             moveTo={handleClick}
-                        />
+                        />}
                         {
-                            planetsInfo.map((galacticSphere) =>
+                            planetsInfo && planetsInfo.map((galacticSphere) =>
                                 <GalacticSpheredObject
                                     {...galacticSphere}
                                     position={[0, 3, -5]}
