@@ -1,14 +1,13 @@
-import { Canvas } from "@react-three/fiber";
-import { CameraControls, KeyboardControls, OrbitControls, PointerLockControls } from '@react-three/drei'
-import { Physics } from "@react-three/rapier";
-import World from "./World";
-import SmallSollarSystem from "./SmallSolarSystem";
-import { useControls } from 'leva'
 import { useEffect, useRef, useState } from "react";
-import { PerspectiveCamera } from '@react-three/drei'
-import GameContext, { defaultGameState } from "./gameContext";
+import { Canvas } from "@react-three/fiber";
+import { KeyboardControls, OrbitControls } from '@react-three/drei'
+import { Physics } from "@react-three/rapier";
+import { useControls } from 'leva'
 
-import {default as WasdControls} from "./SmallSolarSystem/KeyboardOrbitControl";
+// import SolarSystem from "./worlds/SolarSystem";
+import SmallSollarSystem from "./worlds/SmallSolarSystem";
+import GameContext, { defaultGameState } from "./contexts/gameContext";
+import KeyboardOrbitControl from "./components/KeyboardOrbitControl";
 
 const keyboardMapping = [
   { name: "forward", keys: ["ArrowUp", "w", "W"] },
@@ -104,7 +103,7 @@ const App = () => {
 
             {/* <PointerLockControls selector="#start-btn" /> */}
             <OrbitControls makeDefault />
-          <WasdControls />
+          <KeyboardOrbitControl />
           </Canvas>
         </div>
       </KeyboardControls >

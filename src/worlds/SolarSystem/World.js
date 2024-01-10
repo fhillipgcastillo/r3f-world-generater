@@ -8,7 +8,7 @@ import GalacticSpheredObject from './GalacticSpheredObject';
 import { useThree } from '@react-three/fiber';
 import { useFrame } from '@react-three/fiber';
 import { useControls } from 'leva';
-import GameContext from '../gameContext';
+import GameContext from '../../contexts/gameContext';
 
 
 const World = () => {

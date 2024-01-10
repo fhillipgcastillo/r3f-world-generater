@@ -1,17 +1,17 @@
 import React, { Suspense, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import Floor from "./Floor";
-import Environment from "./Environment";
 import { Html, PerspectiveCamera } from '@react-three/drei';
-import Player from "./Player";
 import { RigidBody } from '@react-three/rapier';
-import GalacticSpheredObject from './GalacticSpheredObject';
 import { useThree } from '@react-three/fiber';
 import { useFrame } from '@react-three/fiber';
 import { useControls } from 'leva';
-import GameContext from '../gameContext';
+
+import GameContext from '../../contexts/gameContext';
 import WorldContext from './WorldContext';
 
-
+import Floor from "../../components/Floor";
+import Environment from "../../components/Environment";
+import Player from "../../components/Player";
+import GalacticSpheredObject from '../../components/GalacticSpheredObject';
 
 
 const World = () => {
