@@ -24,6 +24,7 @@ const App = () => {
   const [paused, setPaused] = useState(true);
   const controls = useControls('Game', {
     debug: false,
+    keyboardSpeedMultiplier: 50000,
   });
   const cameraRef = useRef();
   const playerTopPosition = [0, 2.5, 35]
@@ -97,7 +98,7 @@ const App = () => {
 
             {/* <PointerLockControls selector="#start-btn" /> */}
             <OrbitControls makeDefault />
-            <KeyboardOrbitControl />
+            <KeyboardOrbitControl speedMultiplier={controls.keyboardSpeedMultiplier} />
           </Canvas>
         </div>
       </KeyboardControls >

@@ -139,7 +139,7 @@ const World = () => {
             max: 10,
             step: 1,
         },
-        position: [3000, 0, 2872500000 * 0.001],
+        position: [3000, 0, 2872500000 * 0.005],
     })
 
     useEffect(() => {

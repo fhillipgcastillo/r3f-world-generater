@@ -25,7 +25,7 @@ const useCodes = () => {
 const vec = new Vector3()
 
 // Rotation logic from three/examples/jsm/controls/PointerLockControls.js
-export default function KeyboardOrbitControl() {
+export default function KeyboardOrbitControl({speedMultiplier=1}) {
   const { camera, controls: orbitControls } = useThree()
   const code = useCodes();
 
@@ -41,7 +41,7 @@ export default function KeyboardOrbitControl() {
     orbitControls.target.addScaledVector(vec, distance)
   }
   useFrame((_, delta) => {
-    const speed = code.current.has('ShiftLeft') ? 50 : 20
+    const speed = (code.current.has('ShiftLeft') ? 50 : 20) * speedMultiplier;
     if (code.current.has('KeyW')) moveForward(delta * speed)
     if (code.current.has('KeyA')) moveRight(-delta * speed)
     if (code.current.has('KeyS')) moveForward(-delta * speed)
