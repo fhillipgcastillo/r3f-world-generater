@@ -28,35 +28,35 @@ const planetsInfo = [
         name: "Mercury",
         size: 4879, // diameter
         color: "#c0bdbc", // or hex color
-        awayFromSun: 57900000 / distanceDevider, //57900000, // km
+        awayFromSun: 57900000, //57900000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
     {
         name: "Venus",
-        size: 12104 * 10, // diameter
+        size: 12104, // diameter
         color: "#f4dbcc", // or hex color
-        awayFromSun: 108200000 / distanceDevider, //149600000, // km
+        awayFromSun: 108200000, //149600000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
     {
         name: "Earth",
-        size: 12756 * 10, // diameter
+        size: 12756, // diameter
         color: "#426b8f", // or hex color
-        awayFromSun: 149600000 / distanceDevider, // km
+        awayFromSun: 149600000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
         objects: [
             {
                 name: "Moon",
-                size: 6000 * 10, // diameter
+                size: 6000, // diameter
                 color: "white", // or hex color
-                awayFromSun: 149900000 / distanceDevider, // km this will be the offset
+                awayFromSun: 384400, // km this will be the offset
                 rotationSpeed: 0.00001, // maybe rotations per second
                 rotation: {
                     x: 0,
-                    y: 149600000 / distanceDevider,
+                    y: 384400,
                     z: 0,
                 }
             },
@@ -64,9 +64,9 @@ const planetsInfo = [
     },
     {
         name: "Mars",
-        size: 6792 * 10, // diameter
+        size: 6792, // diameter
         color: "#f27b5f", // or hex color
-        awayFromSun: 227900000 / distanceDevider, //149600000, // km
+        awayFromSun: 227900000, //149600000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -74,7 +74,7 @@ const planetsInfo = [
         name: "Jupiter",
         size: 142984, // diameter
         color: "#bfaf9b", // or hex color
-        awayFromSun: 778600000 / distanceDevider, //149600000, // km
+        awayFromSun: 778600000, //149600000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -82,7 +82,7 @@ const planetsInfo = [
         name: "Saturn",
         size: 120536, // diameter
         color: "#f3ce88", // or hex color
-        awayFromSun: 1433500000 / distanceDevider, //149600000, // km
+        awayFromSun: 1433500000, //149600000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -90,7 +90,7 @@ const planetsInfo = [
         name: "Uranus",
         size: 51118, // diameter
         color: "#d0ecf0", // or hex color
-        awayFromSun: 2872500000 / distanceDevider, //149600000, // km
+        awayFromSun: 2872500000, //149600000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -98,7 +98,7 @@ const planetsInfo = [
         name: "Neptune",
         size: 49528, // diameter
         color: "#657ba5", // or hex color
-        awayFromSun: 4495100000 / distanceDevider, //149600000, // km
+        awayFromSun: 4495100000, //149600000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -116,7 +116,7 @@ const World = () => {
     const controls = useControls('Camera', {
         // debug: false,
         fov: {
-            value: 24,
+            value: 50,
             min: 13,
             max: 100,
             step: 1,
@@ -128,10 +128,10 @@ const World = () => {
             step: 100,
         },
         far: {
-            value: 5000,
+            value: 9681040000,
             min: 400,
-            max: 100000000,
-            step: 100,
+            max: 10820000000,
+            step: 10000,
         },
         zoom: {
             value: 1,
@@ -139,7 +139,7 @@ const World = () => {
             max: 10,
             step: 1,
         },
-        position: [3000, 0, 1000],
+        position: [3000, 0, 2872500000 * 0.001],
     })
 
     useEffect(() => {

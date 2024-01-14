@@ -5,7 +5,7 @@ import { Physics } from "@react-three/rapier";
 import { useControls } from 'leva'
 
 import SolarSystem from "./worlds/SolarSystem";
-// import SmallSollarSystem from "./worlds/SmallSolarSystem";
+import SmallSollarSystem from "./worlds/SmallSolarSystem";
 import GameContext, { defaultGameState } from "./contexts/gameContext";
 import KeyboardOrbitControl from "./components/KeyboardOrbitControl";
 
