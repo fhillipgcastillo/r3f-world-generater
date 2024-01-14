@@ -6,6 +6,7 @@ export const defaultGameState = {
     paused: true,
     planetsInfo: [],
     distanceDevider,
+    debug: true,
 };
 const GameContext = createContext({});
 

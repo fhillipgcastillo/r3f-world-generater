@@ -26,7 +26,7 @@ export const Planet = (props) => {
     const distanceScale = 0.1;
     const thePosition = useMemo(() => {
         const [x, y, z] = props?.proistion || [0, 0, 0];
-        const offset = 0//(props.size * sizeReductionBy / 2);
+        const offset = (props.size * sizeReductionBy / 2);
         return [(x + props.awayFromSun - offset) * distanceScale, y, z];
     }, [props.awayFromSun]);
 

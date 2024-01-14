@@ -1,6 +1,7 @@
-import { useMemo, useRef, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Planet } from "./Planet";
+import GameContext from "../contexts/gameContext";
 
 
 export const sizeReductionBy = 1 / 100000.00;
@@ -33,11 +34,12 @@ const GalacticSpheredObject = (props) => {
     const [beingHover, setBeingHover] = useState(false);
     const galacticGroup = useRef();
     const localGroup = useRef();
-
+    const {debug} = useContext(GameContext);
+    
     const distanceScale = 0.1;
     const thePosition = useMemo(() => {
         const [x, y, z] = props?.proistion || [0, 0, 0];
-        const offset = 0//(props.size * sizeReductionBy / 2);
+        const offset = (props.size * sizeReductionBy / 2); //this is to have centered rotation
         return [(x + props.awayFromSun - offset) * distanceScale, y, z];
     }, [props.awayFromSun]);
 
@@ -87,7 +89,8 @@ const GalacticSpheredObject = (props) => {
 
                 </group>
             }
-            <axesHelper args={[props.size * 3]} />
+
+            {debug && <axesHelper args={[props.size * 3]} />}
 
         </group>
     )

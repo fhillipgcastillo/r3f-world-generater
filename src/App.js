@@ -19,9 +19,10 @@ const keyboardMapping = [
   { name: "flyDown", keys: ["Control"] },
 ];
 
+
 const App = () => {
   const [paused, setPaused] = useState(true);
-  const controls = useControls('Physics', {
+  const controls = useControls('Game', {
     debug: false,
   });
   const cameraRef = useRef();
@@ -40,7 +41,7 @@ const App = () => {
 
 
   return (
-    <GameContext.Provider value={{ ...defaultGameState, paused }}>
+    <GameContext.Provider value={{ ...defaultGameState, paused, debug: controls.debug }}>
       <KeyboardControls map={keyboardMapping}>
         {/* add animation later */}
         {/* 
