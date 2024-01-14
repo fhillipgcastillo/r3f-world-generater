@@ -36,7 +36,7 @@ const planetsInfo = [
         name: "Venus",
         size: 12104, // diameter
         color: "#f4dbcc", // or hex color
-        awayFromSun: 108200000, //149600000, // km
+        awayFromSun: 108200000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -66,7 +66,7 @@ const planetsInfo = [
         name: "Mars",
         size: 6792, // diameter
         color: "#f27b5f", // or hex color
-        awayFromSun: 227900000, //149600000, // km
+        awayFromSun: 227900000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -74,7 +74,7 @@ const planetsInfo = [
         name: "Jupiter",
         size: 142984, // diameter
         color: "#bfaf9b", // or hex color
-        awayFromSun: 778600000, //149600000, // km
+        awayFromSun: 778600000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -82,7 +82,7 @@ const planetsInfo = [
         name: "Saturn",
         size: 120536, // diameter
         color: "#f3ce88", // or hex color
-        awayFromSun: 1433500000, //149600000, // km
+        awayFromSun: 1433500000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -90,7 +90,7 @@ const planetsInfo = [
         name: "Uranus",
         size: 51118, // diameter
         color: "#d0ecf0", // or hex color
-        awayFromSun: 2872500000, //149600000, // km
+        awayFromSun: 2872500000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -98,7 +98,7 @@ const planetsInfo = [
         name: "Neptune",
         size: 49528, // diameter
         color: "#657ba5", // or hex color
-        awayFromSun: 4495100000, //149600000, // km
+        awayFromSun: 4495100000, // km
         // rotationSpeed: 1, // maybe rotations per second
         // rotationAngle: 0, // angle
     },
@@ -142,21 +142,6 @@ const World = () => {
         position: [3000, 0, 2872500000 * 0.005],
     })
 
-    useEffect(() => {
-        // if (teleportTo.hasOwnProperty("x")) {
-        //     const { x, y, z } = teleportTo;
-        //     game.camera.position.set(x, y, z + ((teleportTarget.size * 1 / 100000.00) * 0.1) + (teleportTarget.size * 1 / 100000.00));
-        // }
-    }, [teleportTo]);
-    useEffect(() => {
-        // galaxiesRef.current.rotation.y = Math.PI / 8;
-    }, [galaxiesRef])
-    useFrame((state, delta) => {
-        // state.camera.updateMatrixWorld();
-        // galaxiesRef.current.rotation.y += delta;
-        // state.camera.lerp()
-        // console.log(state.camera.position);
-    });
 
     const handleClick = (target, pos) => {
         setTeleportTo(pos);
@@ -204,11 +189,9 @@ const World = () => {
                         /> */}
                         <PerspectiveCamera
                             {...controls}
-                            // position={[0,0,50]}
                             makeDefault
                             onUpdate={self => {
                                 self.updateProjectionMatrix();
-                                // console.log("updated camera", self)
                             }}
                         />
 

@@ -24,11 +24,13 @@ const App = () => {
   const [paused, setPaused] = useState(true);
   const controls = useControls('Game', {
     debug: false,
-    keyboardSpeedMultiplier: 50000,
+    keyboardSpeedMultiplier: 5000,
   });
   const cameraRef = useRef();
-  const playerTopPosition = [0, 2.5, 35]
+  const orbitControl = useRef();
 
+  const playerTopPosition = [0, 2.5, 35]
+  const [currentWorld, setCurrentWorld] = useState();
   const pointerlockchange = (e) => {
     setPaused(!paused);
   };
@@ -42,7 +44,7 @@ const App = () => {
 
 
   return (
-    <GameContext.Provider value={{ ...defaultGameState, paused, debug: controls.debug }}>
+    <GameContext.Provider value={{ ...defaultGameState, paused, debug: controls.debug, orbitControl: orbitControl }}>
       <KeyboardControls map={keyboardMapping}>
         {/* add animation later */}
         {/* 
@@ -97,7 +99,7 @@ const App = () => {
             </Physics>
 
             {/* <PointerLockControls selector="#start-btn" /> */}
-            <OrbitControls makeDefault />
+            <OrbitControls makeDefault ref={orbitControl} />
             <KeyboardOrbitControl speedMultiplier={controls.keyboardSpeedMultiplier} />
           </Canvas>
         </div>

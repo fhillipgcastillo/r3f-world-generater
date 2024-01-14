@@ -91,24 +91,8 @@ const World = () => {
         rotation: [0, 0, 0],
     })
 
-    useEffect(() => {
-        // if (teleportTo.hasOwnProperty("x")) {
-        //     const { x, y, z } = teleportTo;
-        //     game.camera.position.set(x, y, z + ((teleportTarget.size * 1 / 100000.00) * 0.1) + (teleportTarget.size * 1 / 100000.00));
-        // }
-    }, [teleportTo]);
-    useEffect(() => {
-        // galaxiesRef.current.rotation.y = Math.PI / 8;
-    }, [galaxiesRef])
-    useFrame((state, delta) => {
-        // state.camera.updateMatrixWorld();
-        // galaxiesRef.current.rotation.y += delta;
-        // state.camera.lerp()
-        // console.group("position");
-        // console.log(state.camera.position);
-        // console.log(controls.position);
-        // console.groupEnd();
-    });
+ 
+
 
     const handleClick = (target, pos) => {
         setTeleportTo(pos);
